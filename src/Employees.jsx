@@ -4,15 +4,7 @@ import maleProfile from './images/maleProfile.jpg'
 
 const Employees = ({employees, selectedTeam, handleEmployeeCardClick,handleTeamSelectionChange}) => {
 
-    function handleTeamSelectionChange(event) {
-       setTeam(event.target.value);
-    }
 
-    function handleEmployeeCardClick(event) {
-      const transformedEmployees = employees.map((employee) => employee.id === parseInt(event.currentTarget.id)?(employee.teamName === selectedTeam)?{...employee, teamName:''}:{...employee,teamName: selectedTeam}: employee);
-
-      setEmployees(transformedEmployees);
-    }
 
 
     return (
