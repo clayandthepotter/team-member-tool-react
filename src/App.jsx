@@ -1,15 +1,19 @@
 import * as React from 'react';
 import './App.css';
+import Nav from './Nav.jsx'
 import Header from './Header.jsx';
 import Employees from './Employees.jsx'
 import Footer from './Footer.jsx';
+import NotFound from './NotFound';
+import GroupedTeamMembers from './GroupedTeamMembers';
 import { useState, useEffect } from "react";
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 function App() {
 
-  const [selectedTeam, setTeam] = useState('TeamA')
+  const [selectedTeam, setTeam] = useState(JSON.parse(localStorage.getItem('selectedTeam')) || 'TeamA')
 
-  const [employees, setEmployees] = useState([
+  const [employees, setEmployees] = useState(JSON.parse(localStorage.getItem('employeeList')) || [
     {   
       id: 1,
       fullName: "Bob Jones",
@@ -121,18 +125,29 @@ function App() {
 
   return (
     <>
-      <Header
-        selectedTeam={selectedTeam}
-        teamMemberCount={employees.filter((employee) => 
-          employee.teamName === selectedTeam).length}
-      />
-      <Employees  
-        employees={employees}
-        selectedTeam={selectedTeam}
-        handleEmployeeCardClick={handleEmployeeCardClick}
-        handleTeamSelectionChange={handleTeamSelectionChange}
-      />
-      <Footer/>
+      <Router>
+        <Nav/>
+        <Header
+          selectedTeam={selectedTeam}
+          teamMemberCount={employees.filter((employee) =>
+            employee.teamName === selectedTeam).length}
+        />
+        <Routes>
+          <Route path ='/'
+            element={<Employees
+                        employees={employees}
+                        selectedTeam={selectedTeam}
+                        handleEmployeeCardClick={handleEmployeeCardClick}
+                        handleTeamSelectionChange={handleTeamSelectionChange}
+                    />}>
+          </Route>
+          <Route path='/GroupedTeamMembers' element ={<GroupedTeamMembers employees={employees} selectedTeam={selectedTeam} setTeam={setTeam}/>}>
+          </Route>
+          <Route path='*' element ={<NotFound/>}>
+          </Route>
+        </Routes>
+        <Footer/>
+      </Router>
     </>
   );
 }
