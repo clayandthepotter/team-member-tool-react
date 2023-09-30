@@ -3,7 +3,7 @@ import './App.css';
 import Header from './Header.jsx';
 import Employees from './Employees.jsx'
 import Footer from './Footer.jsx';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
 
@@ -94,6 +94,20 @@ function App() {
       gender: "male",
       teamName: "TeamD"
     }])
+
+    useEffect(() => {
+
+      localStorage.setItem('employeeList', JSON.stringify(employees))
+
+    },[employees]);
+
+    useEffect(() => {
+
+      localStorage.setItem('selectedTeam', JSON.stringify(selectedTeam))
+
+    },[selectedTeam]);
+
+
 
     function handleTeamSelectionChange(event) {
       setTeam(event.target.value);
